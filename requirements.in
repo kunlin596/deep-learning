@@ -1,0 +1,4 @@
+pip-tools >= 6.13.0
+torch >= 2.0.0
+torchvision >= 0.15.1
+IPython >= 8.13.1
