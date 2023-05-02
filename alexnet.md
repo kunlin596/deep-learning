@@ -34,6 +34,8 @@ Major impacts:
 4. not being recognized as important by the author, but the end 4096-vector can capture the semantic information in the image very well
    1. DL can be thought as an information compression process, it transfers the images, texts, etc to a vector which computer can understand
 
+PCA is used for data augmentation (color enhancement).
+
 ### Comments
 
 Learning rate starts from 0, as epochs go on, the learning rate goes up and then goes down again. In the past, the learning rate is set manually during training, for instance, when operator observes that the training loss is not going down, we people manual tune it down.
