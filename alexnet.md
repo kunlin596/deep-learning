@@ -12,9 +12,6 @@ AlexNet does not have a conclusion section but a discussion section which is rar
 
 ### Discussion Section
 
-Unsupervised pre-training: use some un-labeled image data to set the weights properly at first then continue the supervised training (warming up). Because training a net back in that time was not easy.
-AlexNet influenced the whole deep learning mindset, because at that time people thought the deep learning network can learn the pattern autonomously from a unlabeled dataset. At that time people were pursuing unsupervised learning since it's closer to human's perception.
-Until recent years, BERT brought people's interests back to unsupervised learning.
 
 ### Feature Vector Extraction
 
