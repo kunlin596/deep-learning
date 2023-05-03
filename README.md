@@ -4,6 +4,7 @@ This repo includes all of the implementations for popular deep-learning techniqu
 
 - [AlexNet](./alexnet.md)
 - [ResNet](./resnet.md)
+- [Transformer](./transformer.md)
 
 ## Datasets
 

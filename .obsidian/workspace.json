@@ -20,7 +20,7 @@
             }
           },
           {
-            "id": "f7645d0973c0892a",
+            "id": "072c72a6eca648fd",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -31,7 +31,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -106,7 +107,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "transformer.md",
+                "file": "wiki.md",
                 "collapseAll": false,
                 "extraContext": true,
                 "sortOrder": "alphabetical",
@@ -123,7 +124,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "transformer.md",
+                "file": "wiki.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -146,7 +147,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "transformer.md"
+                "file": "wiki.md"
               }
             }
           }
@@ -155,7 +156,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -167,7 +169,21 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b8b0bd05a49b76f1",
+  "active": "072c72a6eca648fd",
   "lastOpenFiles": [
+    "transformer.md",
+    "wiki.md",
+    "README.md",
+    "Untitled.md",
+    "Inception V3.md",
+    "wiki^.md",
+    "ZQ.md",
+    "resnet.md",
+    "Untitled 1.md",
+    "Untitled.canvas",
+    "2023-05-03.md",
+    "dominant-sequence-transduction.md",
+    "Cominant sequence transduction.md",
+    "alexnet.md"
   ]
 }

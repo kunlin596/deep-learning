@@ -21,7 +21,8 @@ If a shallow model works well, then adding more layers should not make the model
 
 ### Construct such identity mapping explicitly
 
-"Shortcut connections" -- `H(x) = F(x) + x`.
+"Shortcut connections"
+$$H(x)=F(x)+x$$
 
 ## Residual
 
