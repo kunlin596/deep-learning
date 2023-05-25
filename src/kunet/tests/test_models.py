@@ -237,9 +237,7 @@ def test_three_layer_mlp_nonlinear_regression(fn, num_epochs, loss_threshold):
         for batch in range(num_batches):
             y_hat = model(X[:, batch * batch_size : (batch + 1) * batch_size])
             y_hat = y_hat.reshape(1, -1)
-            batch_loss = loss_fn(
-                y_hat, y[:, batch * batch_size : (batch + 1) * batch_size]
-            )
+            batch_loss = loss_fn(y_hat, y[:, batch * batch_size : (batch + 1) * batch_size])
             epoch_loss += batch_loss
             model.backward(loss_fn.backward())
             model.step(learning_rate)

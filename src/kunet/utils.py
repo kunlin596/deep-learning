@@ -17,7 +17,7 @@ def one_hot(labels: list[int], num_classes: int) -> np.ndarray:
 
 
 class Node(ABC):
-    """Computational graph node"""
+    """Computational graph node."""
 
     _cache = None
     _track_grads = None
@@ -35,14 +35,14 @@ class Node(ABC):
 
     @abstractmethod
     def forward(self, *args, **kwargs) -> Any:
-        """Feed forward"""
+        """Compute the feed forward result."""
 
     @abstractmethod
     def backward(self, grads: np.ndarray | float) -> np.ndarray:
-        """Compute gradients"""
+        """Compute the gradients."""
 
     def step(self, lr: float) -> None:
-        """Update internal state"""
+        """Update internal state."""
         return
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:

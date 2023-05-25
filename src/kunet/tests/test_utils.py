@@ -83,11 +83,7 @@ def test_sigmoid():
 def _get_y_hat(n_features, n_samples):
     logits = sym.MatrixSymbol("logits", n_features, n_samples)
     logits_exp = logits.applyfunc(sym.exp).as_explicit()
-    s = (
-        (sym.Matrix.ones(1, n_features) * logits_exp)
-        .applyfunc(lambda x: 1 / x)
-        .as_explicit()
-    )
+    s = (sym.Matrix.ones(1, n_features) * logits_exp).applyfunc(lambda x: 1 / x).as_explicit()
     y_hat = sym.Matrix(
         [
             sym.matrix_multiply_elementwise(logits_exp.row(i), s).as_explicit()
