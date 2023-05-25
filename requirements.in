@@ -6,3 +6,4 @@ netron # for network visualization
 pre-commit >= 3.3.0
 matplotlib
 ipykernel
+scipy
