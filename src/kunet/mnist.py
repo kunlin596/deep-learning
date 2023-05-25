@@ -16,8 +16,8 @@ np.set_printoptions(suppress=True)
 def main():
     # Hyper-parameters
     model_layer_sizes = [784, 256, 64, 10]
-    batch_size = 128
-    num_epochs = 100
+    batch_size = 64
+    num_epochs = 5
     learning_rate = 0.0001
 
     # Set up dataset
@@ -27,9 +27,7 @@ def main():
         transform=T.ToTensor(),
     )
 
-    training_dataset, validation_dataset, test_dataset = random_split(
-        dataset, [0.7, 0.2, 0.1]
-    )
+    training_dataset, validation_dataset, test_dataset = random_split(dataset, [0.7, 0.2, 0.1])
 
     print("training:  ", len(training_dataset))
     print("validation:", len(validation_dataset))
@@ -73,7 +71,7 @@ def main():
             predictions = y_hat.argmax(axis=0)
             current_count += np.count_nonzero(predictions == label.numpy())
 
-            if batch % 100 == 0:
+            if batch % 1000 == 0:
                 print(f"epoch: {epoch}, batch: {batch:4d}, loss={loss:10.7f}")
         running_loss += loss
         print(

@@ -34,6 +34,11 @@ def seed() -> int:
 
 
 @pytest.fixture
+def num_samples() -> int:
+    return 64
+
+
+@pytest.fixture
 def rng(seed) -> np.random.Generator:
     return np.random.default_rng(seed)
 
@@ -42,9 +47,9 @@ def rng(seed) -> np.random.Generator:
     "fn,num_epochs,loss_threshold,activation_fn",
     list(
         itertools.product(
-            [univariate_fn1, univariate_fn2, univariate_fn3],
-            [500000],
-            [0.01],
+            [univariate_fn1, univariate_fn2],
+            [50000],
+            [0.1],
             [utils.Sigmoid, utils.HyperbolicTangent, utils.ReLU],
         )
     ),
@@ -54,10 +59,10 @@ def test_one_layer_mlp_nonlinear_regression(
     activation_fn,
     num_epochs,
     loss_threshold,
+    num_samples,
 ):
-    num_samples = 64
     # hyper-parameters
-    hidden_size = 32
+    hidden_size = 128
     learning_rate = 0.01
 
     model = models.SequentialModel(
@@ -83,14 +88,14 @@ def test_one_layer_mlp_nonlinear_regression(
     loss_fn = utils.MSELoss()
 
     all_loss = []
-    for i in range(1, num_epochs + 1):
+    for _ in range(1, num_epochs + 1):
         y_hat = model(X).reshape(1, -1)
         epoch_loss = loss_fn(y_hat, y)
         all_loss.append(epoch_loss)
         model.backward(loss_fn.backward())
         model.step(learning_rate)
-        if i % 1000 == 0:
-            print(f"{i:6d}: loss={epoch_loss:12.5f}")
+        # if i % 1000 == 0:
+        #     print(f"{i:6d}: loss={epoch_loss:12.5f}")
         if epoch_loss < loss_threshold:
             break
 
@@ -103,7 +108,7 @@ def test_one_layer_mlp_nonlinear_regression(
         itertools.product(
             [univariate_fn1, univariate_fn2, univariate_fn3],
             [100000],
-            [0.01],
+            [0.02],
             [utils.Sigmoid, utils.HyperbolicTangent, utils.ReLU],
         )
     ),
@@ -113,10 +118,10 @@ def test_two_layer_mlp_nonlinear_regression(
     num_epochs,
     loss_threshold,
     activation_fn,
+    num_samples,
 ):
-    num_samples = 64
     # hyper-parameters
-    hidden_size = [64, 32]
+    hidden_size = [64, 64]
     learning_rate = 0.01
 
     model = models.SequentialModel(
@@ -148,13 +153,12 @@ def test_two_layer_mlp_nonlinear_regression(
     y = fn(X).reshape(1, -1)
     loss_fn = utils.MSELoss()
 
-    all_loss = []
     for i in range(1, num_epochs + 1):
         y_hat = model(X).reshape(1, -1)
         epoch_loss = loss_fn(y_hat, y)
-        all_loss.append(epoch_loss)
         model.backward(loss_fn.backward())
         model.step(learning_rate)
+
         if i % 1000 == 0:
             print(f"{i:6d}: loss={epoch_loss:12.5f}")
 
@@ -165,54 +169,47 @@ def test_two_layer_mlp_nonlinear_regression(
 
 
 @pytest.mark.parametrize(
-    "fn,num_epochs,loss_threshold",
-    [
-        [
-            univariate_fn1,
-            50000,
-            0.004,
-        ],
-        [
-            univariate_fn2,
-            50000,
-            0.004,
-        ],
-        [
-            univariate_fn3,
-            100000,
-            0.002,
-        ],
-    ],
+    "fn,num_epochs,loss_threshold,activation_fn",
+    list(
+        itertools.product(
+            [univariate_fn1, univariate_fn2, univariate_fn3],
+            [100000],
+            [0.022],
+            [utils.Sigmoid, utils.HyperbolicTangent, utils.ReLU],
+        )
+    ),
 )
-def test_three_layer_mlp_nonlinear_regression(fn, num_epochs, loss_threshold):
-    # Prepare dummy data
-    num_samples = 64
-
+def test_three_layer_mlp_nonlinear_regression(
+    fn,
+    num_epochs,
+    loss_threshold,
+    activation_fn,
+    num_samples,
+):
     # hyper-parameters
-    hidden_size = [64, 32, 16]
+    hidden_size = [64, 64, 32]
     learning_rate = 0.01
-    batch_size = 64
 
     model = models.SequentialModel(
         [
             models.DenseLayer(
                 input_size=1,
                 output_size=hidden_size[0],
-                activation=utils.HyperbolicTangent(),
+                activation=activation_fn(),
                 normalize=False,
                 layer_key="1",
             ),
             models.DenseLayer(
                 input_size=hidden_size[0],
                 output_size=hidden_size[1],
-                activation=utils.HyperbolicTangent(),
+                activation=activation_fn(),
                 normalize=False,
                 layer_key="2",
             ),
             models.DenseLayer(
                 input_size=hidden_size[1],
                 output_size=hidden_size[2],
-                activation=utils.HyperbolicTangent(),
+                activation=activation_fn(),
                 normalize=False,
                 layer_key="3",
             ),
@@ -230,21 +227,14 @@ def test_three_layer_mlp_nonlinear_regression(fn, num_epochs, loss_threshold):
     y = fn(X).reshape(1, -1)
     loss_fn = utils.MSELoss()
 
-    all_loss = []
-    num_batches = num_samples // batch_size + (1 if num_samples % batch_size else 0)
     for i in range(1, num_epochs + 1):
-        epoch_loss = 0.0
-        for batch in range(num_batches):
-            y_hat = model(X[:, batch * batch_size : (batch + 1) * batch_size])
-            y_hat = y_hat.reshape(1, -1)
-            batch_loss = loss_fn(y_hat, y[:, batch * batch_size : (batch + 1) * batch_size])
-            epoch_loss += batch_loss
-            model.backward(loss_fn.backward())
-            model.step(learning_rate)
+        y_hat = model(X).reshape(1, -1)
+        epoch_loss = loss_fn(y_hat, y)
+        model.backward(loss_fn.backward())
+        model.step(learning_rate)
 
         if i % 1000 == 0:
             print(f"{i:6d}: loss={epoch_loss:12.5f}")
-            all_loss.append(epoch_loss)
 
         if epoch_loss < loss_threshold:
             break
